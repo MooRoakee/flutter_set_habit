@@ -1,6 +1,9 @@
 # set_habit
-
-A new Flutter project.
+[目标]
+链接webdev实现备分
+动画&UI
+看看能不能拉到微信登录的头像
+欸 希望能写完叭
 
 ## Getting Started
 
