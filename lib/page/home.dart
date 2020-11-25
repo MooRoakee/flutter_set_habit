@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:set_habit/others/constant.dart';
 import 'package:set_habit/others/habitset.dart';
@@ -17,9 +19,8 @@ class _MyAppState extends State<Home> {
 
   @override
   Widget build(Object context) {
-    var deviceData = MediaQuery.of(context); // 返回 MediaQueryData
-    var width = deviceData.size.width; //返回context所在的窗口宽度
-    var height = deviceData.size.height; //返回context所在的窗口高度
+    var width = MediaQuery.of(context).size.width; //返回context所在的窗口宽度
+    var height = MediaQuery.of(context).size.height; //返回context所在的窗口高度
     var heightScaleOfHead = 0.345;
 
     return Scaffold(
@@ -29,14 +30,14 @@ class _MyAppState extends State<Home> {
             children: <Widget>[
               Column(children: <Widget>[
                 SizedBox(
-                  height: height*heightScaleOfHead-30,
+                  height: height * heightScaleOfHead - 35,
                 ),
 
                 ///------------------------------------
                 ///卡片部分
                 ///------------------------------------
                 Container(
-                  height: height*(1-heightScaleOfHead)+30,
+                  height: height * (1 - heightScaleOfHead) + 35,
                   child: GridView.count(
                     physics: BouncingScrollPhysics(),
                     crossAxisCount: 2,
@@ -56,39 +57,65 @@ class _MyAppState extends State<Home> {
               ///头部分
               ///--------------------------------------------
               Container(
-                height: height*heightScaleOfHead,
+                height: height * heightScaleOfHead,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(108, 96, 224, 1),
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(30),
                         bottomRight: Radius.circular(30))),
               ),
-              Positioned(
-                  top: 50,
-                  left: 20,
-                  child: Icon(Icons.dashboard_rounded,
-                      size: 40, color: Colors.white)),
-              Positioned(
-                top: 115,
-                left: 25,
-                child: Text(
-                  '嗨，默其妙',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w500),
-                ),
-              ),
-              Positioned(
-                top: 165,
-                left: 25,
-                child: Text(
-                  '阿巴阿巴',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold),
-                ),
+
+              Column(
+                children: [
+                  SizedBox(
+                    height: height * 0.04,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(width * 0.05),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Icon(Icons.dashboard_rounded,
+                            size: 40, color: Colors.white)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: width * 0.05),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: CircleAvatar(
+                        radius: width * 0.09,
+                        backgroundImage: AssetImage('assets/img/profile.png'),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(left: width * 0.05, top: height * 0.01),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '嗨，默其妙',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(left: width * 0.05, top: height * 0.01),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '今日已完成 XX,剩余完成 XX',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
