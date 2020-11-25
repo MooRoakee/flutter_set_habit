@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:set_habit/page/home.dart';
 
+import 'page/drawer_screen.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -11,11 +13,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      home: Scaffold(
+        body: Stack(
+          children: [
+            DrawerScreen(),
+            Home(),
+          ],
+        ),
       ),
-      home: Home(),
     );
   }
 }
