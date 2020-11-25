@@ -11,12 +11,17 @@ class Home extends StatefulWidget {
 class _MyAppState extends State<Home> {
   @override
   void initState() {
-    habit.add(Habit(HabitSet(Colors.amber)));
+    // habit.add(Habit(HabitSet(Colors.amber)));
     super.initState();
   }
 
   @override
   Widget build(Object context) {
+    var deviceData = MediaQuery.of(context); // 返回 MediaQueryData
+    var width = deviceData.size.width; //返回context所在的窗口宽度
+    var height = deviceData.size.height; //返回context所在的窗口高度
+    var heightScaleOfHead = 0.345;
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -24,10 +29,14 @@ class _MyAppState extends State<Home> {
             children: <Widget>[
               Column(children: <Widget>[
                 SizedBox(
-                  height: 215,
+                  height: height*heightScaleOfHead-30,
                 ),
+
+                ///------------------------------------
+                ///卡片部分
+                ///------------------------------------
                 Container(
-                  height: 600,
+                  height: height*(1-heightScaleOfHead)+30,
                   child: GridView.count(
                     physics: BouncingScrollPhysics(),
                     crossAxisCount: 2,
@@ -42,8 +51,12 @@ class _MyAppState extends State<Home> {
                   ),
                 ),
               ]),
+
+              ///--------------------------------------------
+              ///头部分
+              ///--------------------------------------------
               Container(
-                height: 250,
+                height: height*heightScaleOfHead,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(108, 96, 224, 1),
                     borderRadius: BorderRadius.only(
@@ -51,7 +64,7 @@ class _MyAppState extends State<Home> {
                         bottomRight: Radius.circular(30))),
               ),
               Positioned(
-                  top: 60,
+                  top: 50,
                   left: 20,
                   child: Icon(Icons.dashboard_rounded,
                       size: 40, color: Colors.white)),
@@ -70,7 +83,7 @@ class _MyAppState extends State<Home> {
                 top: 165,
                 left: 25,
                 child: Text(
-                  '快来接着开发，别写作业了',
+                  '阿巴阿巴',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
