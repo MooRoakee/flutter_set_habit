@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class DrawerScreen extends StatefulWidget {
@@ -14,7 +16,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
     height = MediaQuery.of(context).size.height; //返回context所在的窗口高度
     return SafeArea(
       child: Container(
-          color: Colors.purple,
+          color: Colors.blueGrey,
           child: Padding(
             padding: EdgeInsets.only(top: 40, left: 30, bottom: 70),
             child: Column(
@@ -30,9 +32,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       width: 10,
                     ),
                     Text(
-                      'atdadfafa',
+                      'Mosallas Group',
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 22,
                           fontWeight: FontWeight.bold),
                     )
@@ -40,20 +42,41 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 ),
                 Column(
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.error_outline,
-                          color: Colors.white,
-                        ),
-                        SizedBox(width: 20),
-                      ],
+                    NewRoute(
+                      text: 'Settings',
+                      icon: Icons.settings,
+                    ),
+                    SizedBox(
+                      height: 20,
                     )
                   ],
                 ),
               ],
             ),
           )),
+    );
+  }
+}
+
+class NewRoute extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  const NewRoute({Key key, this.icon, this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          color: Colors.white,
+        ),
+        SizedBox(width: 20),
+        Text(
+          text,
+          style: TextStyle(color: Colors.white),
+        ),
+      ],
     );
   }
 }
