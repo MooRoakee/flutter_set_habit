@@ -11,18 +11,14 @@ class Home extends StatefulWidget {
 }
 
 class _MyAppState extends State<Home> {
-
-    double xOffset = 0;
-    double yOffset = 0;
-    bool isDrawerOpen = false;
-
+  double xOffset = 0;
+  double yOffset = 0;
+  bool isDrawerOpen = false;
 
   @override
   void initState() {
-
     // habit.add(Habit(HabitSet(Colors.amber)));
     super.initState();
-    
   }
 
   @override
@@ -31,12 +27,11 @@ class _MyAppState extends State<Home> {
     var height = MediaQuery.of(context).size.height; //返回context所在的窗口高度
     var heightScaleOfHead = 0.345;
 
-
-
     return AnimatedContainer(
       transform: Matrix4.translationValues(xOffset, yOffset, 0)
         ..scale(isDrawerOpen ? 0.85 : 1.00)
         ..rotateZ(isDrawerOpen ? -50 : 0),
+      curve: Curves.fastOutSlowIn,
       duration: Duration(milliseconds: 200),
       child: Scaffold(
         body: Column(
@@ -85,19 +80,26 @@ class _MyAppState extends State<Home> {
                     SizedBox(
                       height: height * 0.04,
                     ),
-                    InkWell(onTap: (){
-                      setState(() {
-                        isDrawerOpen = !isDrawerOpen;
-                        xOffset = 290;
-                        yOffset = 80;
-                      });
-                    },
-                                          child: Padding(
-                        padding: EdgeInsets.all(width * 0.05),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Icon(Icons.dashboard_rounded,
-                              size: 40, color: Colors.white),
+                    Padding(
+                      padding: EdgeInsets.all(width * 0.05),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isDrawerOpen = !isDrawerOpen;
+                              xOffset = isDrawerOpen ? 290 : 0;
+                              yOffset = isDrawerOpen ? 80 : 0;
+                            });
+                          },
+                          child: isDrawerOpen
+                              ? Icon(
+                                  Icons.arrow_back,
+                                  size: 40,
+                                  color: Colors.white,
+                                )
+                              : Icon(Icons.dashboard_rounded,
+                                  size: 40, color: Colors.white),
                         ),
                       ),
                     ),
