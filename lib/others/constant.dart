@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:set_habit/widget/habit_widget.dart';
 
 // List<Widget> habit = new List<Widget>();
 List<Widget> habit = List.generate(
-    10,
+    30,
     (index) => Card(
-          elevation: 2,
-          color: Colors.amber,
+          elevation: 0,
+          color: Color.fromRGBO(227, 255, 239, 1),
         ));

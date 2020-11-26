@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:set_habit/others/constant.dart';
 
 class DrawerScreen extends StatefulWidget {
   @override
@@ -6,48 +8,54 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
+  var width;
+  var height;
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Colors.blueGrey,
-        child: Padding(
-          padding: EdgeInsets.only(top: 50, left: 40, bottom: 70),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
+    width = MediaQuery.of(context).size.width; //返回context所在的窗口宽度
+    height = MediaQuery.of(context).size.height; //返回context所在的窗口高度
+    return SafeArea(
+      child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: EdgeInsets.only(top: 40, left: 30, bottom: 70),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: width * 0.07,
+                      child: FlutterLogo(),
+                      // backgroundColor: Colors.white,
                     ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'atdadfafa',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.error_outline,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 20),
-                    ],
-                  )
-                ],
-              ),
-            ],
-          ),
-        ));
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'atdadfafa',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 20),
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+          )),
+    );
   }
 }
