@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:set_habit/others/constant.dart';
 
 class DrawerScreen extends StatefulWidget {
   @override
@@ -16,7 +14,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
     height = MediaQuery.of(context).size.height; //返回context所在的窗口高度
     return SafeArea(
       child: Container(
-          color: Colors.white,
+          color: Colors.purple,
           child: Padding(
             padding: EdgeInsets.only(top: 40, left: 30, bottom: 70),
             child: Column(

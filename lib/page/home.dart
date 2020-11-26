@@ -14,7 +14,6 @@ class _MyAppState extends State<Home> {
 
   @override
   void initState() {
-    // habit.add(Habit(HabitSet(Colors.amber)));
     super.initState();
   }
 
@@ -22,8 +21,34 @@ class _MyAppState extends State<Home> {
   Widget build(Object context) {
     var width = MediaQuery.of(context).size.width; //返回context所在的窗口宽度
     var height = MediaQuery.of(context).size.height; //返回context所在的窗口高度
-    var heightScaleOfHead = 0.345;
 
+    int i = 0;
+    while (i < 4) {
+      i++;
+      habit.add(buildHabit(
+        Color.fromRGBO(255, 234, 233, 1),
+        Color.fromRGBO(255, 0, 0, 1),
+        Color.fromRGBO(255, 148, 147, 1),
+        'Bill Pay',
+        'Due on May 14th',
+        Icons.create_sharp,
+      ));
+      habit.add(buildHabit(
+          Color.fromRGBO(237, 228, 255, 1),
+          Color.fromRGBO(114, 48, 222, 1),
+          Color.fromRGBO(180, 145, 240, 1),
+          'ReWards',
+          '12,324 points',
+          Icons.insert_chart));
+
+      habit.add(buildHabit(
+          Color.fromRGBO(227, 255, 239, 1),
+          Color.fromRGBO(63, 210, 140, 1),
+          Color.fromRGBO(164, 209, 186, 1),
+          'Statement',
+          'June 2020 Available',
+          Icons.insert_chart));
+    }
     return SafeArea(
       child: AnimatedContainer(
         transform: Matrix4.translationValues(xOffset, yOffset, 0)
@@ -68,12 +93,16 @@ class _MyAppState extends State<Home> {
                 ),
               ),
             ),
+
+            ///====================================
+            ///客套话
+            ///====================================
             Padding(
               padding: EdgeInsets.only(left: width * 0.05, top: height * 0.025),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Hi, Roakee',
+                  'Hi, MioRoakee',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 27,
@@ -94,6 +123,10 @@ class _MyAppState extends State<Home> {
                 ),
               ),
             ),
+
+            ///======================================
+            ///没啥用的东西
+            ///======================================
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -111,7 +144,7 @@ class _MyAppState extends State<Home> {
                 ),
                 Padding(
                   padding:
-                      EdgeInsets.only(top: height * 0.03, right: width * 0.05),
+                      EdgeInsets.only(top: height * 0.03, right: width * 0.07),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -123,54 +156,54 @@ class _MyAppState extends State<Home> {
                 ),
               ],
             ),
-            Stack(
-              children: <Widget>[
-                Column(children: <Widget>[
-                  SizedBox(
-                    height: height * heightScaleOfHead - 35,
-                  ),
-
-                  ///------------------------------------
-                  ///卡片部分
-                  ///------------------------------------
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //       borderRadius: isDrawerOpen
-                  //           ? BorderRadius.circular(40)
-                  //           : BorderRadius.circular(0)),
-                  //   height: height * (1 - heightScaleOfHead) + 35,
-                  //   child: GridView(
-                  //     physics: BouncingScrollPhysics(),
-
-                  //     // children: List.generate(50, (index) {
-                  //     //   return Container(
-                  //     //     child: Card(
-                  //     //       color: Colors.amber,
-                  //     //     ),
-                  //     //   );
-                  //     // }),
-                  //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  //         crossAxisCount: 3, childAspectRatio: 1),
-                  //     children: habit,
-                  //   ),
-                  // ),
-                ]),
-
-                ///--------------------------------------------
-                ///头部分
-                ///--------------------------------------------
-                // Container(
-                //   height: height * heightScaleOfHead,
-                //   decoration: BoxDecoration(
-                //       color: Color.fromRGBO(108, 96, 224, 1),
-                //       borderRadius: BorderRadius.only(
-                //           topLeft: isDrawerOpen
-                //               ? Radius.circular(40)
-                //               : Radius.circular(0),
-                //           bottomLeft: Radius.circular(30),
-                //           bottomRight: Radius.circular(30))),
-                // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                    padding:
+                        EdgeInsets.only(left: width * 0.05, top: height * 0.01),
+                    child: Text(
+                      'Checking Account',
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                    )),
+                Padding(
+                    padding: EdgeInsets.only(
+                        right: width * 0.20, top: height * 0.01),
+                    child: Text(
+                      'Savings Account',
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                    )),
               ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                    padding: EdgeInsets.only(
+                        left: width * 0.05, top: height * 0.007),
+                    child: Text(
+                      'Balance',
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                    )),
+                Padding(
+                    padding: EdgeInsets.only(
+                        right: width * 0.34, top: height * 0.007),
+                    child: Text(
+                      'Balance',
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                    )),
+              ],
+            ),
+            Container(
+              height: height * 0.648,
+              child: GridView.count(
+                  crossAxisCount: 2,
+                  padding: EdgeInsets.all(width * 0.05),
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                  physics: BouncingScrollPhysics(),
+                  childAspectRatio: .9,
+                  children: habit),
             ),
           ],
         ),
