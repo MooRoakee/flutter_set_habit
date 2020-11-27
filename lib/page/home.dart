@@ -6,11 +6,16 @@ class Home extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
+bool isDrawerOpen = false;
+bool isGesture = false;
+
 class _MyAppState extends State<Home> {
   double xOffset = 0;
   double yOffset = 0;
+  double scaleOffset = 1;
+  double rotateOffset = 0;
   double profileXOffset = 0;
-  bool isDrawerOpen = false;
+  double profileRotate = 0;
 
   @override
   void initState() {
@@ -23,7 +28,7 @@ class _MyAppState extends State<Home> {
     var height = MediaQuery.of(context).size.height; //返回context所在的窗口高度
 
     int i = 0;
-    while (i < 4) {
+    while (i < 3) {
       i++;
       habit.add(buildHabit(
         Color.fromRGBO(255, 234, 233, 1),
@@ -50,17 +55,35 @@ class _MyAppState extends State<Home> {
           Icons.insert_chart));
     }
     return SafeArea(
-      child: AnimatedContainer(
-        transform: Matrix4.translationValues(xOffset, yOffset, 0)
-          ..scale(isDrawerOpen ? 0.85 : 1.00)
-          ..rotateZ(isDrawerOpen ? -50 : 0),
-        curve: Curves.fastOutSlowIn,
-        duration: Duration(milliseconds: 200),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: isDrawerOpen
-                ? BorderRadius.circular(40)
-                : BorderRadius.circular(0)),
+        child: AnimatedContainer(
+      transform: Matrix4.translationValues(xOffset, yOffset, 0)
+        ..scale(scaleOffset)
+        ..rotateZ(rotateOffset),
+      duration:
+          isGesture ? Duration(milliseconds: 0) : Duration(milliseconds: 200),
+      curve: Curves.fastOutSlowIn,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: isDrawerOpen
+              ? BorderRadius.circular(40)
+              : BorderRadius.circular(0)),
+      child: GestureDetector(
+        onPanUpdate: (DragUpdateDetails d) {
+          if (!isDrawerOpen) {
+            isGesture = true;
+            xOffset += d.delta.dx;
+            yOffset += d.delta.dy;
+            profileXOffset += d.delta.dx * 35 / 290;
+            scaleOffset *= 0.997;
+          }
+
+          setState(() {});
+        },
+        onPanEnd: (d) {
+          isDrawerOpen = !isDrawerOpen;
+          isGesture = false;
+          setState(() {});
+        },
         child: Column(
           children: <Widget>[
             ///====================================
@@ -73,6 +96,9 @@ class _MyAppState extends State<Home> {
                   xOffset = isDrawerOpen ? 290 : 0;
                   yOffset = isDrawerOpen ? 80 : 0;
                   profileXOffset = isDrawerOpen ? 35 : 0;
+                  scaleOffset = isDrawerOpen ? 0.85 : 1;
+                  rotateOffset = isDrawerOpen ? -50 : 0;
+                  profileRotate = isDrawerOpen ? -150 : 0;
                 });
               },
               child: Padding(
@@ -82,9 +108,9 @@ class _MyAppState extends State<Home> {
                   alignment: Alignment.centerLeft,
                   child: AnimatedContainer(
                     transform: Matrix4.translationValues(profileXOffset, 0, 0)
-                      ..rotateZ(isDrawerOpen ? -150 : 0),
-                    duration: Duration(milliseconds: 200),
+                      ..rotateZ(profileRotate),
                     curve: Curves.fastOutSlowIn,
+                    duration: Duration(milliseconds: 200),
                     child: CircleAvatar(
                       radius: width * 0.07,
                       backgroundImage: AssetImage('assets/img/profile.png'),
@@ -208,6 +234,6 @@ class _MyAppState extends State<Home> {
           ],
         ),
       ),
-    );
+    ));
   }
 }

@@ -24,13 +24,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     CircleAvatar(
                       radius: width * 0.07,
                       child: FlutterLogo(),
-                      // backgroundColor: Colors.white,
+                      backgroundColor: Colors.white,
                     ),
                     SizedBox(
                       width: 10,
                     ),
                     Text(
-                      'Mosallas Group',
+                      'Set Habits!',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -38,15 +38,39 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     )
                   ],
                 ),
+                SizedBox(
+                  height: height * 0.15,
+                ),
                 Column(
                   children: [
+                    NewRoute(
+                      text: 'Webdev',
+                      icon: Icons.cloud,
+                    ),
+                    SizedBox(
+                      height: height * 0.04,
+                    ),
                     NewRoute(
                       text: 'Settings',
                       icon: Icons.settings,
                     ),
                     SizedBox(
-                      height: 20,
-                    )
+                      height: height * 0.04,
+                    ),
+                    NewRoute(
+                      text: 'Settings',
+                      icon: Icons.settings,
+                    ),
+                    SizedBox(
+                      height: height * 0.04,
+                    ),
+                    NewRoute(
+                      text: 'Settings',
+                      icon: Icons.settings,
+                    ),
+                    SizedBox(
+                      height: height * 0.04,
+                    ),
                   ],
                 ),
               ],
@@ -72,7 +96,7 @@ class NewRoute extends StatelessWidget {
         SizedBox(width: 20),
         Text(
           text,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 23),
         ),
       ],
     );
