@@ -64,34 +64,84 @@ class _MyAppState extends State<Home> {
       curve: Curves.fastOutSlowIn,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: isDrawerOpen
+          borderRadius: isDrawerOpen || isGesture
               ? BorderRadius.circular(40)
               : BorderRadius.circular(0)),
       child: GestureDetector(
         onPanUpdate: (DragUpdateDetails d) {
           print('dx = ${d.delta.dx} dy = ${d.delta.dy}');
+
+          isGesture = true;
           if (!isDrawerOpen) {
             if (d.delta.dx > 0) {
-              isGesture = true;
               if (xOffset <= 290) xOffset += d.delta.dx;
               if (yOffset <= 80) yOffset += d.delta.dy;
               if (scaleOffset >= 0.85) scaleOffset *= 0.999;
-              if (rotateOffset <= 0.25) rotateOffset += 0.005;
-              if (profileRotate <= 0.25) profileRotate += 0.009;
+              if (rotateOffset <= 0.25 && rotateOffset >= 0)
+                rotateOffset += 0.002;
+              if (profileRotate <= 0.25 && profileRotate >= 0)
+                profileRotate += 0.009;
               if (profileXOffset <= 10) profileXOffset += 0.2;
+            } else {
+              if (xOffset <= 290) xOffset += d.delta.dx;
+              if (yOffset <= 80) yOffset += d.delta.dy;
+              if (scaleOffset >= 0.85) scaleOffset *= 1.001;
+              if (rotateOffset <= 0.25 && rotateOffset >= 0)
+                rotateOffset -= 0.0005;
+              if (profileRotate <= 0.25 && profileRotate >= 0)
+                profileRotate -= 0.009;
+              if (profileXOffset <= 10) profileXOffset -= 0.2;
             }
+          } else {
+            if (xOffset <= 290) xOffset += d.delta.dx;
+            if (yOffset >= 0) yOffset += d.delta.dx;
+            if (scaleOffset >= 0.85) scaleOffset *= 1.001;
+            if (rotateOffset <= 0) rotateOffset -= 0.001;
+            if (profileRotate <= 0.25 && profileRotate >= 0)
+              profileRotate += 0.009;
+            if (profileXOffset <= 10) profileXOffset += 0.2;
           }
 
           setState(() {});
         },
         onPanEnd: (d) {
-          isDrawerOpen = !isDrawerOpen;
-          xOffset = isDrawerOpen ? 290 : 0;
-          yOffset = isDrawerOpen ? 80 : 0;
-          profileXOffset = isDrawerOpen ? 35 : 0;
-          scaleOffset = isDrawerOpen ? 0.85 : 1;
-          rotateOffset = isDrawerOpen ? -50 : 0;
-          profileRotate = isDrawerOpen ? -150 : 0;
+          if (!isDrawerOpen) {
+            if (xOffset >= 290 / 2) {
+              isDrawerOpen = !isDrawerOpen;
+              xOffset = isDrawerOpen ? 290 : 0;
+              yOffset = isDrawerOpen ? 80 : 0;
+              profileXOffset = isDrawerOpen ? 35 : 0;
+              scaleOffset = isDrawerOpen ? 0.85 : 1;
+              rotateOffset = isDrawerOpen ? -50 : 0;
+              profileRotate = isDrawerOpen ? -150 : 0;
+            } else {
+              xOffset = isDrawerOpen ? 290 : 0;
+              yOffset = isDrawerOpen ? 80 : 0;
+              profileXOffset = isDrawerOpen ? 35 : 0;
+              scaleOffset = isDrawerOpen ? 0.85 : 1;
+              rotateOffset = isDrawerOpen ? -50 : 0;
+              profileRotate = isDrawerOpen ? -150 : 0;
+            }
+          } else {
+            if (xOffset <= 290 / 2) {
+              isDrawerOpen = !isDrawerOpen;
+              xOffset = isDrawerOpen ? 290 : 0;
+              yOffset = isDrawerOpen ? 80 : 0;
+              profileXOffset = isDrawerOpen ? 35 : 0;
+              scaleOffset = isDrawerOpen ? 0.85 : 1;
+              rotateOffset = isDrawerOpen ? -50 : 0;
+              profileRotate = isDrawerOpen ? -150 : 0;
+            } else {
+              isDrawerOpen = !isDrawerOpen;
+              xOffset = isDrawerOpen ? 290 : 0;
+              yOffset = isDrawerOpen ? 80 : 0;
+              profileXOffset = isDrawerOpen ? 35 : 0;
+              scaleOffset = isDrawerOpen ? 0.85 : 1;
+              rotateOffset = isDrawerOpen ? -50 : 0;
+              profileRotate = isDrawerOpen ? -150 : 0;
+            }
+          }
+
           isGesture = false;
           setState(() {});
         },
