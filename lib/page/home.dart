@@ -83,14 +83,16 @@ class _MyAppState extends State<Home> {
                 profileRotate += 0.009;
               if (profileXOffset <= 10) profileXOffset += 0.2;
             } else {
-              if (xOffset <= 290) xOffset += d.delta.dx;
-              if (yOffset <= 80) yOffset += d.delta.dy;
-              if (scaleOffset >= 0.85) scaleOffset *= 1.001;
-              if (rotateOffset <= 0.25 && rotateOffset >= 0)
-                rotateOffset -= 0.0005;
-              if (profileRotate <= 0.25 && profileRotate >= 0)
-                profileRotate -= 0.009;
-              if (profileXOffset <= 10) profileXOffset -= 0.2;
+              if (xOffset >= 20) {
+                if (xOffset <= 290) xOffset += d.delta.dx;
+                if (yOffset <= 80) yOffset += d.delta.dy;
+                if (scaleOffset >= 0.85) scaleOffset *= 1.001;
+                if (rotateOffset <= 0.25 && rotateOffset >= 0)
+                  rotateOffset -= 0.0005;
+                if (profileRotate <= 0.25 && profileRotate >= 0)
+                  profileRotate -= 0.009;
+                if (profileXOffset <= 10) profileXOffset -= 0.2;
+              }
             }
           } else {
             if (xOffset <= 290) xOffset += d.delta.dx;
@@ -132,7 +134,6 @@ class _MyAppState extends State<Home> {
               rotateOffset = isDrawerOpen ? -50 : 0;
               profileRotate = isDrawerOpen ? -150 : 0;
             } else {
-              isDrawerOpen = !isDrawerOpen;
               xOffset = isDrawerOpen ? 290 : 0;
               yOffset = isDrawerOpen ? 80 : 0;
               profileXOffset = isDrawerOpen ? 35 : 0;
