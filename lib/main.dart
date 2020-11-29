@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:set_habit/page/home.dart';
-
+import 'package:get/get.dart';
 import 'page/drawer_screen.dart';
 
 void main() {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Stack(

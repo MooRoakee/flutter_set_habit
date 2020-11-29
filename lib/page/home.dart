@@ -20,15 +20,9 @@ class _MyAppState extends State<Home> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  Widget build(Object context) {
-    var width = MediaQuery.of(context).size.width; //返回context所在的窗口宽度
-    var height = MediaQuery.of(context).size.height; //返回context所在的窗口高度
 
     int i = 0;
-    while (i < 3) {
+    while (i < 2) {
       i++;
       habit.add(buildHabit(
         Color.fromRGBO(255, 234, 233, 1),
@@ -54,6 +48,13 @@ class _MyAppState extends State<Home> {
           'June 2020 Available',
           Icons.insert_chart));
     }
+  }
+
+  @override
+  Widget build(Object context) {
+    var width = MediaQuery.of(context).size.width; //返回context所在的窗口宽度
+    var height = MediaQuery.of(context).size.height; //返回context所在的窗口高度
+
     return SafeArea(
         child: AnimatedContainer(
       transform: Matrix4.translationValues(xOffset, yOffset, 0)
@@ -95,7 +96,7 @@ class _MyAppState extends State<Home> {
               }
             }
           } else {
-            if (xOffset <= 290) xOffset += d.delta.dx;
+            if (xOffset <= 290) xOffset += d.delta.dx * 1.5;
             if (yOffset >= 0) yOffset += d.delta.dx;
             if (scaleOffset >= 0.85) scaleOffset *= 1.001;
             if (rotateOffset <= 0) rotateOffset -= 0.001;
