@@ -2,6 +2,10 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:set_habit/others/constant.dart';
+import 'package:set_habit/others/ripple_router.dart';
+import 'package:set_habit/page/ripple_drawer.dart';
+
+import 'drawer_stack.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -166,35 +170,32 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
               ///====================================
               ///头像
               ///====================================
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isDrawerOpen = !isDrawerOpen;
-                    xOffset = isDrawerOpen ? 290 : 0;
-                    yOffset = isDrawerOpen ? 80 : 0;
-                    profileXOffset = isDrawerOpen ? 35 : 0;
-                    scaleOffset = isDrawerOpen ? 0.85 : 1;
-                    rotateOffset = isDrawerOpen ? -50 : 0;
-                    profileRotate = isDrawerOpen ? -150 : 0;
-                  });
-                },
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(left: width * 0.05, top: height * 0.02),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: AnimatedContainer(
-                      transform: Matrix4.translationValues(profileXOffset, 0, 0)
-                        ..rotateZ(profileRotate),
-                      curve: Curves.fastOutSlowIn,
-                      duration: isGesture
-                          ? Duration(milliseconds: 0)
-                          : Duration(milliseconds: 200),
-                      child: CircleAvatar(
-                        radius: width * 0.07,
-                        backgroundImage: AssetImage('assets/img/profile.png'),
-                      ),
-                    ),
+              Padding(
+                padding:
+                    EdgeInsets.only(left: width * 0.05, top: height * 0.02),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: AnimatedContainer(
+                    transform: Matrix4.translationValues(profileXOffset, 0, 0)
+                      ..rotateZ(profileRotate),
+                    curve: Curves.fastOutSlowIn,
+                    duration: isGesture
+                        ? Duration(milliseconds: 0)
+                        : Duration(milliseconds: 200),
+                    child: Builder(builder: (iconContext) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(RippleRoute(
+                              drawer_stack(),
+                                  RouteConfig.fromContext(iconContext)));
+
+                        },
+                        child: CircleAvatar(
+                          radius: width * 0.07,
+                          backgroundImage: AssetImage('assets/img/profile.png'),
+                        ),
+                      );
+                    }),
                   ),
                 ),
               ),
