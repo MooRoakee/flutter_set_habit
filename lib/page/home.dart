@@ -36,39 +36,41 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
       )
       ..duration = Duration(milliseconds: 200);
 
-    int i = 0;
-    while (i < 2) {
-      i++;
-      habit.add(buildHabit(
-        Color.fromRGBO(255, 234, 233, 1),
-        Color.fromRGBO(255, 0, 0, 1),
-        Color.fromRGBO(255, 148, 147, 1),
-        'Bill Pay',
-        'Due on May 14th',
-        Icons.create_sharp,
-      ));
-      habit.add(buildHabit(
-          Color.fromRGBO(237, 228, 255, 1),
-          Color.fromRGBO(114, 48, 222, 1),
-          Color.fromRGBO(180, 145, 240, 1),
-          'ReWards',
-          '12,324 points',
-          Icons.insert_chart));
-
-      habit.add(buildHabit(
-          Color.fromRGBO(227, 255, 239, 1),
-          Color.fromRGBO(63, 210, 140, 1),
-          Color.fromRGBO(164, 209, 186, 1),
-          'Statement',
-          'June 2020 Available',
-          Icons.insert_chart));
-    }
+    // int i = 0;
+    // while (i < 1) {
+    //   i++;
+    //   habit.add(buildHabit(
+    //     Color.fromRGBO(255, 234, 233, 1),
+    //     Color.fromRGBO(255, 0, 0, 1),
+    //     Color.fromRGBO(255, 148, 147, 1),
+    //     'Bill Pay',
+    //     '$i',
+    //     Icons.create_sharp,
+    //   ));
+    //   habit.add(buildHabit(
+    //       Color.fromRGBO(237, 228, 255, 1),
+    //       Color.fromRGBO(114, 48, 222, 1),
+    //       Color.fromRGBO(180, 145, 240, 1),
+    //       'ReWards',
+    //       '${i+1}',
+    //       Icons.insert_chart));
+    //
+    //   habit.add(buildHabit(
+    //       Color.fromRGBO(227, 255, 239, 1),
+    //       Color.fromRGBO(63, 210, 140, 1),
+    //       Color.fromRGBO(164, 209, 186, 1),
+    //       'Statement',
+    //       '${i+2}',
+    //       Icons.insert_chart));
+    // }
   }
 
   @override
   Widget build(Object context) {
+    habit.add(HabitItem("早睡", HabitColorType.red, 1));
+
     var width = MediaQuery.of(context).size.width; //返回context所在的窗口宽度
-    height = MediaQuery.of(context).size.height; //返回context所在的窗口高度
+    var height = MediaQuery.of(context).size.height; //返回context所在的窗口高度
 
     return SafeArea(
         child: AnimatedContainer(
@@ -185,13 +187,11 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                     child: Builder(builder: (iconContext) {
                       return InkWell(
                         onTap: () {
-                          Navigator.of(context).push(RippleRoute(
-                              drawer_stack(),
-                                  RouteConfig.fromContext(iconContext)));
-
+                          Navigator.of(context).push(RippleRoute(drawer_stack(),
+                              RouteConfig.fromContext(iconContext)));
                         },
                         child: CircleAvatar(
-                          radius: width * 0.07,
+                          radius: 30,
                           backgroundImage: AssetImage('assets/img/profile.png'),
                         ),
                       );
@@ -203,7 +203,7 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
               ///====================================
               ///客套话
               ///====================================
-              Row(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Padding(
                   padding:
                       EdgeInsets.only(left: width * 0.05, top: height * 0.025),
@@ -218,11 +218,8 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: width * 0.32,
-                ),
                 Padding(
-                  padding: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.only(top: 10,right: width*0.05),
                   child: _buildPausePlayIcon(),
                 )
               ]),
