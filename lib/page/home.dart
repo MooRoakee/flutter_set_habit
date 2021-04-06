@@ -30,40 +30,20 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _controller = AnimationController(vsync: this)
-      ..drive(
-        Tween(begin: 0, end: 1),
-      )
-      ..duration = Duration(milliseconds: 200);
-
     int i = 0;
-    while (i < 2) {
+    while (i < 4) {
       i++;
-      habit.add(buildHabit(
-        Color.fromRGBO(255, 234, 233, 1),
-        Color.fromRGBO(255, 0, 0, 1),
-        Color.fromRGBO(255, 148, 147, 1),
-        'Bill Pay',
-        'Due on May 14th',
-        Icons.create_sharp,
-      ));
-      habit.add(buildHabit(
-          Color.fromRGBO(237, 228, 255, 1),
-          Color.fromRGBO(114, 48, 222, 1),
-          Color.fromRGBO(180, 145, 240, 1),
-          'ReWards',
-          '12,324 points',
-          Icons.insert_chart));
+      habit.add(HabitItem('Bill Pay', HabitColorType.red, HabitDayType.EVERYDAY,
+          Icons.create_sharp,1));
 
-      habit.add(buildHabit(
-          Color.fromRGBO(227, 255, 239, 1),
-          Color.fromRGBO(63, 210, 140, 1),
-          Color.fromRGBO(164, 209, 186, 1),
-          'Statement',
-          'June 2020 Available',
-          Icons.insert_chart));
+      habit.add(HabitItem('ReWards', HabitColorType.purple,
+          HabitDayType.EVERYDAY, Icons.insert_chart,2));
+      habit.add(HabitItem('Bill Pay', HabitColorType.green,
+          HabitDayType.EVERYDAY, Icons.import_contacts_outlined,3));
     }
   }
+
+
 
   @override
   Widget build(Object context) {
@@ -72,6 +52,7 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
 
     return SafeArea(
         child: AnimatedContainer(
+      transformAlignment: Alignment.center,
       transform: Matrix4.translationValues(xOffset, yOffset, 0)
         ..scale(scaleOffset)
         ..rotateZ(rotateOffset),
@@ -83,7 +64,10 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
           borderRadius: isDrawerOpen || isGesture
               ? BorderRadius.circular(40)
               : BorderRadius.circular(0)),
-      child: SingleChildScrollView(
+      child: ClipRRect(
+        borderRadius: isDrawerOpen || isGesture
+            ? BorderRadius.circular(40)
+            : BorderRadius.circular(0),
         child: GestureDetector(
           onPanUpdate: (DragUpdateDetails d) {
             print('dx = ${d.delta.dx} dy = ${d.delta.dy}');
@@ -91,30 +75,32 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
             isGesture = true;
             if (!isDrawerOpen) {
               if (d.delta.dx > 0) {
-                if (xOffset + d.delta.dx <= 290) xOffset += d.delta.dx;
-                if (yOffset + d.delta.dy <= 80) yOffset += d.delta.dy;
+                if (xOffset + d.delta.dx <= 180) xOffset += d.delta.dx;
+
+                if (yOffset + 0.5 * d.delta.dx <= 80)
+                  yOffset += 0.5 * d.delta.dx;
+
                 if (scaleOffset >= 0.85) scaleOffset *= 0.999;
                 if (rotateOffset <= 0.25 && rotateOffset >= 0)
-                  rotateOffset += 0.0009;
+                  rotateOffset += 0.0005 * d.delta.dx;
                 if (profileRotate <= 0.25 && profileRotate >= 0)
-                  profileRotate += 0.001;
+                  profileRotate += 0.0005 * d.delta.dx;
                 if (profileXOffset <= 10) profileXOffset += 0.2;
               } else {
-                if (xOffset >= 20) {
-                  if (xOffset + d.delta.dx <= 290) xOffset += d.delta.dx;
-                  if (yOffset + d.delta.dy <= 80) yOffset += d.delta.dy;
+                if (xOffset >= 0) {
+                  if (xOffset + d.delta.dx <= 180) xOffset += d.delta.dx;
+                  if (yOffset + 0.5 * d.delta.dx <= 80)
+                    yOffset += 0.5 * d.delta.dx;
                   if (scaleOffset >= 0.85) scaleOffset *= 1.001;
                   if (rotateOffset <= 0.25 && rotateOffset >= 0)
                     rotateOffset -= 0.0005;
                   if (profileRotate <= 0.25 && profileRotate >= 0)
                     profileRotate -= 0.009;
                   if (profileXOffset <= 10) profileXOffset -= 0.2;
-                } else {
-                  isGesture = false;
                 }
               }
             } else {
-              if (xOffset + d.delta.dx <= 290) xOffset += d.delta.dx * 1.5;
+              if (xOffset + d.delta.dx <= 180) xOffset += d.delta.dx * 1.5;
               if (yOffset + d.delta.dy >= 0) yOffset += d.delta.dx;
               if (scaleOffset >= 0.85) scaleOffset *= 1.001;
               if (rotateOffset <= 0) rotateOffset -= 0.001;
@@ -127,16 +113,16 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
           },
           onPanEnd: (d) {
             if (!isDrawerOpen) {
-              if (xOffset >= 290 / 2) {
+              if (xOffset >= 180 / 2) {
                 isDrawerOpen = !isDrawerOpen;
-                xOffset = isDrawerOpen ? 290 : 0;
+                xOffset = isDrawerOpen ? 180 : 0;
                 yOffset = isDrawerOpen ? 80 : 0;
                 profileXOffset = isDrawerOpen ? 35 : 0;
                 scaleOffset = isDrawerOpen ? 0.85 : 1;
                 rotateOffset = isDrawerOpen ? -50 : 0;
                 profileRotate = isDrawerOpen ? -150 : 0;
               } else {
-                xOffset = isDrawerOpen ? 290 : 0;
+                xOffset = isDrawerOpen ? 180 : 0;
                 yOffset = isDrawerOpen ? 80 : 0;
                 profileXOffset = isDrawerOpen ? 35 : 0;
                 scaleOffset = isDrawerOpen ? 0.85 : 1;
@@ -144,16 +130,16 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                 profileRotate = isDrawerOpen ? -150 : 0;
               }
             } else {
-              if (xOffset <= 290 / 2) {
+              if (xOffset <= 180 / 2) {
                 isDrawerOpen = !isDrawerOpen;
-                xOffset = isDrawerOpen ? 290 : 0;
+                xOffset = isDrawerOpen ? 180 : 0;
                 yOffset = isDrawerOpen ? 80 : 0;
                 profileXOffset = isDrawerOpen ? 35 : 0;
                 scaleOffset = isDrawerOpen ? 0.85 : 1;
                 rotateOffset = isDrawerOpen ? -50 : 0;
                 profileRotate = isDrawerOpen ? -150 : 0;
               } else {
-                xOffset = isDrawerOpen ? 290 : 0;
+                xOffset = isDrawerOpen ? 180 : 0;
                 yOffset = isDrawerOpen ? 80 : 0;
                 profileXOffset = isDrawerOpen ? 35 : 0;
                 scaleOffset = isDrawerOpen ? 0.85 : 1;
@@ -176,7 +162,8 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: AnimatedContainer(
-                    transform: Matrix4.translationValues(profileXOffset, 0, 0)
+                    transformAlignment: Alignment.center,
+                    transform: Matrix4.translationValues(0, 0, 0)
                       ..rotateZ(profileRotate),
                     curve: Curves.fastOutSlowIn,
                     duration: isGesture
@@ -185,13 +172,17 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                     child: Builder(builder: (iconContext) {
                       return InkWell(
                         onTap: () {
-                          Navigator.of(context).push(RippleRoute(
-                              drawer_stack(),
-                                  RouteConfig.fromContext(iconContext)));
-
+                          isDrawerOpen = !isDrawerOpen;
+                          xOffset = isDrawerOpen ? 180 : 0;
+                          yOffset = isDrawerOpen ? 80 : 0;
+                          profileXOffset = isDrawerOpen ? 35 : 0;
+                          scaleOffset = isDrawerOpen ? 0.85 : 1;
+                          rotateOffset = isDrawerOpen ? -50 : 0;
+                          profileRotate = isDrawerOpen ? -150 : 0;
+                          setState(() {});
                         },
                         child: CircleAvatar(
-                          radius: width * 0.07,
+                          radius: 25,
                           backgroundImage: AssetImage('assets/img/profile.png'),
                         ),
                       );
@@ -218,13 +209,6 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: width * 0.32,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: _buildPausePlayIcon(),
-                )
               ]),
               Padding(
                 padding:
@@ -232,7 +216,7 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'What do you want to do today?',
+                    '不复习考研你敲代码敲个鬼呢?',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
@@ -245,83 +229,62 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
               ///没啥用的东西
               ///======================================
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: height * 0.03, left: width * 0.05),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '\$12,939.25',
-                        style: TextStyle(
-                            fontSize: 27, fontWeight: FontWeight.w900),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: height * 0.03),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '今日已完成',
+                            style: TextStyle(
+                                fontSize: 27, fontWeight: FontWeight.w900),
+                          ),
+                        ),
                       ),
-                    ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                        child: Text(
+                          '0 / 5',
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: height * 0.03, right: width * 0.07),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '\$100,203.32',
-                        style: TextStyle(
-                            fontSize: 27, fontWeight: FontWeight.w900),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: height * 0.03),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '昨日完成数',
+                            style: TextStyle(
+                                fontSize: 27, fontWeight: FontWeight.w900),
+                          ),
+                        ),
                       ),
-                    ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                        child: Text(
+                          '0 / 5',
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
+                      )
+                    ],
                   ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.only(
-                          left: width * 0.05, top: height * 0.01),
-                      child: Text(
-                        'Checking Account',
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      )),
-                  Padding(
-                      padding: EdgeInsets.only(
-                          right: width * 0.20, top: height * 0.01),
-                      child: Text(
-                        'Savings Account',
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      )),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.only(
-                          left: width * 0.05, top: height * 0.007),
-                      child: Text(
-                        'Balance',
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      )),
-                  Padding(
-                      padding: EdgeInsets.only(
-                          right: width * 0.34, top: height * 0.007),
-                      child: Text(
-                        'Balance',
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      )),
                 ],
               ),
 
               ///=======================================
               ///卡片区
               ///========================================
-              Column(children: [
-                ClipRRect(
-                  borderRadius: isDrawerOpen || isGesture
-                      ? BorderRadius.only(bottomLeft: Radius.circular(40))
-                      : BorderRadius.only(bottomLeft: Radius.circular(0)),
-                  child: Container(
-                    height: height * 0.65,
+              Column(
+                children: [
+                  Container(
+                    height: 558,
                     child: GridView.count(
                         crossAxisCount: 2,
                         padding: EdgeInsets.all(width * 0.05),
@@ -331,8 +294,8 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                         childAspectRatio: .9,
                         children: habit),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ],
           ),
         ),

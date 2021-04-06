@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:set_habit/page/webdev_set.dart';
@@ -11,6 +12,7 @@ class DrawerScreen extends StatefulWidget {
 class _DrawerScreenState extends State<DrawerScreen> {
   var width;
   var height;
+
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width; //返回context所在的窗口宽度
@@ -42,46 +44,46 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: height * 0.15,
+                  height: 150,
                 ),
                 Column(
                   children: [
-                    OpenContainer(
-                      closedColor: Color.fromRGBO(163, 162, 177, 1),
-                      closedElevation: 0,
-                      openElevation: 0,
-                      closedBuilder: (ctx, action) => NewRoute(
-                        text: 'Webdev',
-                        icon: Icons.cloud,
-                      ),
-                      openBuilder: (ctx, action) => webdev_setting(),
+                    Row(
+                      children: [
+                        OpenContainer(
+                          closedColor: Color.fromRGBO(163, 162, 177, 1),
+                          closedElevation: 0,
+                          openElevation: 0,
+                          transitionDuration: Duration(milliseconds: 450),
+                          transitionType: ContainerTransitionType.fadeThrough,
+                          closedBuilder: (ctx, action) => DrawerItem(
+                            text: 'Webdev',
+                            icon: Icons.cloud,
+                          ),
+                          openBuilder: (ctx, action) => webdev_setting(),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: height * 0.05,
                     ),
-                    NewRoute(
-                      text: 'Settings',
-                      icon: Icons.settings,
-                    ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    NewRoute(
-                      text: 'Settings',
-                      icon: Icons.settings,
-                    ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    NewRoute(
-                      text: 'Settings',
-                      icon: Icons.settings,
-                    ),
-                    SizedBox(
-                      height: height * 0.05,
+                    Row(
+                      children: [
+                        DrawerItem(
+                          text: 'Settings',
+                          icon: Icons.settings,
+                        ),
+                      ],
                     ),
                   ],
                 ),
+                Column(
+                  children: [
+                    Container(
+                      color: Color.fromRGBO(163, 162, 177, 1),
+                    )
+                  ],
+                )
               ],
             ),
           )),
@@ -89,14 +91,16 @@ class _DrawerScreenState extends State<DrawerScreen> {
   }
 }
 
-class NewRoute extends StatelessWidget {
+class DrawerItem extends StatelessWidget {
   final IconData icon;
   final String text;
-  const NewRoute({Key key, this.icon, this.text}) : super(key: key);
+
+  const DrawerItem({Key key, this.icon, this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
           icon,
