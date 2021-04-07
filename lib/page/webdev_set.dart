@@ -9,13 +9,12 @@ class _webdev_settingState extends State<webdev_setting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Webdev 配置页"),
-        ),
-        body: Center(
-            child: Icon(
-          Icons.cloud,
-          size: 100,
-        )));
+      appBar: AppBar(),
+      body: Center(
+              child: Icon(
+            Icons.cloud,
+            size: 100,
+          )),
+    );
   }
 }

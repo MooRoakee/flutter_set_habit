@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:set_habit/page/webdev_set.dart';
 
+import 'HabitAdd.dart';
+
 class DrawerScreen extends StatefulWidget {
   @override
   _DrawerScreenState createState() => _DrawerScreenState();
@@ -69,9 +71,17 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     ),
                     Row(
                       children: [
-                        DrawerItem(
-                          text: 'Settings',
-                          icon: Icons.settings,
+                        OpenContainer(
+                          closedColor: Color.fromRGBO(163, 162, 177, 1),
+                          closedElevation: 0,
+                          openElevation: 0,
+                          transitionDuration: Duration(milliseconds: 450),
+                          transitionType: ContainerTransitionType.fadeThrough,
+                          closedBuilder: (ctx, action) => DrawerItem(
+                            text: 'Add Habit',
+                            icon: Icons.add_box_outlined,
+                          ),
+                          openBuilder: (ctx, action) => HabitAdd(),
                         ),
                       ],
                     ),
@@ -90,6 +100,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
     );
   }
 }
+
 
 class DrawerItem extends StatelessWidget {
   final IconData icon;

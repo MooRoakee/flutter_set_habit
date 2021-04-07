@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 List<Widget> habit = [];
 
@@ -76,15 +77,21 @@ class _HabitItemState extends State<HabitItem> {
   Future<bool> onLikeButtonTapped(bool isLiked) async{
 
 
-    isLikedLocal = !isLikedLocal;
+    isLikedLocal = true;
     setState(() {
-      if(isLikedLocal){
+      if(isLikedLocal&&completeness<widget.goal){
         completeness+=1;
-      }else{
-        completeness-=1;
       }
 
     });
+    if(completeness!=widget.goal) {
+      Future.delayed(Duration(milliseconds: 700), () {
+        isLikedLocal = !isLikedLocal;
+        setState(() {
+
+        });
+      });
+    }
 
 
     return !isLiked;
@@ -96,15 +103,18 @@ class _HabitItemState extends State<HabitItem> {
       color: colorbackG,
       child: Column(
         children: [
-          AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            child: LinearProgressIndicator(
-
-              minHeight: 5,
-              backgroundColor: colorbackG,
-              valueColor: AlwaysStoppedAnimation(colorIcon),
-              value: completeness / widget.goal,
-            ),
+          LinearPercentIndicator(
+            curve: Curves.fastOutSlowIn,
+            padding: EdgeInsets.zero,
+            animation: true,
+            animateFromLastPercent: true,
+            width: (MediaQuery.of(context).size.width-60)/2,
+            lineHeight: 5.0,
+            animationDuration: 300,
+            percent: completeness / widget.goal,
+            linearStrokeCap: LinearStrokeCap.butt,
+            backgroundColor: colorbackG,
+            progressColor: colorIcon,
           ),
           Padding(
             padding: EdgeInsets.only(right: 20, top: 10),
@@ -116,17 +126,25 @@ class _HabitItemState extends State<HabitItem> {
                 child: LikeButton(
                   isLiked: isLikedLocal,
                   onTap: onLikeButtonTapped,
+                    onLongPress: (){
+                    completeness = 0;
+                    isLikedLocal = false;
+                    setState(() {
+
+                    });
+                    },
                     bubblesColor: BubblesColor(
                       dotPrimaryColor: Color(0xFFFFC107),
                       dotSecondaryColor: Color(0xFFFF9800),
                       dotThirdColor: colorIcon,
                       dotLastColor: colorDayTypeString,
                     ),
-                    padding: EdgeInsets.only(bottom: 5),
+                    padding: EdgeInsets.only(bottom: 5.5,right: 1.5),
                     animationDuration: Duration(milliseconds: 700),
                     circleColor:
                     CircleColor(start: Color(0xFFFFC107), end: colorIcon),
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     likeBuilder: (bool isLiked) {
                       return Icon(
                         widget.icon,

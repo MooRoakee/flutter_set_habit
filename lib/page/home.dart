@@ -2,10 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:set_habit/others/constant.dart';
-import 'package:set_habit/others/ripple_router.dart';
-import 'package:set_habit/page/ripple_drawer.dart';
 
-import 'drawer_stack.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -33,12 +30,12 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
     int i = 0;
     while (i < 4) {
       i++;
-      habit.add(HabitItem('Bill Pay', HabitColorType.red, HabitDayType.EVERYDAY,
+      habit.add(HabitItem('早睡', HabitColorType.red, HabitDayType.EVERYDAY,
           Icons.create_sharp,1));
 
-      habit.add(HabitItem('ReWards', HabitColorType.purple,
+      habit.add(HabitItem('早起', HabitColorType.purple,
           HabitDayType.EVERYDAY, Icons.insert_chart,2));
-      habit.add(HabitItem('Bill Pay', HabitColorType.green,
+      habit.add(HabitItem('和xh吹牛', HabitColorType.green,
           HabitDayType.EVERYDAY, Icons.import_contacts_outlined,3));
     }
   }
@@ -72,9 +69,10 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
           onPanUpdate: (DragUpdateDetails d) {
             print('dx = ${d.delta.dx} dy = ${d.delta.dy}');
 
-            isGesture = true;
+
             if (!isDrawerOpen) {
               if (d.delta.dx > 0) {
+                isGesture = true;
                 if (xOffset + d.delta.dx <= 180) xOffset += d.delta.dx;
 
                 if (yOffset + 0.5 * d.delta.dx <= 80)
@@ -87,7 +85,8 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                   profileRotate += 0.0005 * d.delta.dx;
                 if (profileXOffset <= 10) profileXOffset += 0.2;
               } else {
-                if (xOffset >= 0) {
+                if (xOffset >= 10) {
+                  isGesture = true;
                   if (xOffset + d.delta.dx <= 180) xOffset += d.delta.dx;
                   if (yOffset + 0.5 * d.delta.dx <= 80)
                     yOffset += 0.5 * d.delta.dx;
@@ -100,6 +99,7 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                 }
               }
             } else {
+              isGesture = true;
               if (xOffset + d.delta.dx <= 180) xOffset += d.delta.dx * 1.5;
               if (yOffset + d.delta.dy >= 0) yOffset += d.delta.dx;
               if (scaleOffset >= 0.85) scaleOffset *= 1.001;
@@ -247,7 +247,7 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                       Padding(
                         padding: EdgeInsets.only(top: 5),
                         child: Text(
-                          '0 / 5',
+                          '0 / ${habit.length}',
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       )
@@ -269,7 +269,7 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
                       Padding(
                         padding: EdgeInsets.only(top: 5),
                         child: Text(
-                          '0 / 5',
+                          '0 / ${habit.length}',
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       )
@@ -303,85 +303,4 @@ class _MyAppState extends State<Home> with TickerProviderStateMixin {
     ));
   }
 
-  Widget _buildPausePlayIcon() {
-    return InkWell(
-      child: AnimatedIcon(
-        icon: AnimatedIcons.add_event,
-        progress: _controller,
-        size: 45,
-      ),
-      onTap: () async {
-        if (_controller.status == AnimationStatus.dismissed) {
-          _controller.forward();
-          bool delete = await showDeleteConfirmDialog1();
-          if (delete == null) {
-            print("取消删除");
-          } else {
-            print("已确认删除");
-          }
-          _controller.reverse();
-        }
-      },
-    );
-  }
-
-  // 弹出对话框
-  Future<bool> showDeleteConfirmDialog1() {
-    return showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("创建Habit"),
-          content: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: height * 0.17),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                TextField(
-                  decoration:
-                      InputDecoration(labelText: 'Input the habit name'),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    FlatButton(
-                      color: Colors.grey,
-                      textColor: Colors.white,
-                      onPressed: () {},
-                      child: Text('Select time'),
-                    ),
-                    GestureDetector(
-                      onTap: () => {},
-                      child: CircleAvatar(
-                        //头像半径
-                        radius: 20,
-                        backgroundColor: Colors.black,
-                        //头像图片 -> NetworkImage网络图片，AssetImage项目资源包图片, FileImage本地存储图片
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("取消"),
-              onPressed: () => Navigator.of(context).pop(), // 关闭对话框
-            ),
-            FlatButton(
-              child: Text("确定"),
-              onPressed: () {
-                //关闭对话框并返回true
-                Navigator.of(context).pop(true);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
